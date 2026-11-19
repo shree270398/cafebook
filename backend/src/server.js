@@ -24,6 +24,9 @@ app.use(
 function originAllowed(origin) {
   if (!origin) return true // curl / Postman / server-to-server
   if (env.clientOrigins.includes(origin)) return true
+  if (env.nodeEnv === 'production' && /^https:\/\/([a-z0-9-]+\.)*vercel\.app$/i.test(origin)) {
+    return true
+  }
   if (env.nodeEnv !== 'production' && /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin)) {
     return true
   }
