@@ -1,0 +1,7 @@
+-- CafeBook initial migration.
+-- Mirrors database/schema.sql. Apply once to a fresh Supabase project.
+-- (Contents intentionally kept identical to schema.sql for migration history.)
+--
+-- 1. Open database/schema.sql
+-- 2. Run it in the Supabase SQL Editor
+-- 3. Run database/seed.sql
