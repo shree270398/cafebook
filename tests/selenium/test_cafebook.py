@@ -102,7 +102,12 @@ def book_table(driver):
 
     time_buttons = WebDriverWait(driver, WAIT_SECONDS).until(
         EC.presence_of_all_elements_located(
-            (By.XPATH, "//button[@type='button']")
+            (
+                By.XPATH,
+                "//button[@type='button']["
+                "contains(normalize-space(.), 'AM') or "
+                "contains(normalize-space(.), 'PM')]",
+            )
         )
     )
 

@@ -24,6 +24,8 @@ Thumbs.db
 # Coverage / reports
 coverage/
 test-results/
+__pycache__/
+*.py[cod]
 
 .vercel
 .env*
