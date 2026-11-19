@@ -2,6 +2,8 @@ import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
+import { fileURLToPath } from 'node:url'
+import path from 'node:path'
 import { env, checkEnv } from './config/env.js'
 import apiRoutes from './routes/index.js'
 import { errorHandler, notFound } from './middleware/errorHandler.js'
@@ -64,20 +66,25 @@ app.use('/api', apiRoutes)
 app.use(notFound)
 app.use(errorHandler)
 
-const server = app.listen(env.port, () => {
-  console.log(`\nCafeBook API listening on http://localhost:${env.port}`)
-  console.log(`Environment: ${env.nodeEnv}`)
-  console.log(`Allowed origins: ${env.clientOrigins.join(', ') || 'none'}`)
-})
+const currentFile = fileURLToPath(import.meta.url)
+const entryFile = process.argv[1] ? path.resolve(process.argv[1]) : ''
 
-server.on('error', (error) => {
-  if (error.code === 'EADDRINUSE') {
-    console.error(
-      `Port ${env.port} is already in use. Change PORT in backend/.env or stop the other process.`,
-    )
-    process.exit(1)
-  }
-  throw error
-})
+if (entryFile === path.resolve(currentFile)) {
+  const server = app.listen(env.port, () => {
+    console.log(`\nCafeBook API listening on http://localhost:${env.port}`)
+    console.log(`Environment: ${env.nodeEnv}`)
+    console.log(`Allowed origins: ${env.clientOrigins.join(', ') || 'none'}`)
+  })
+
+  server.on('error', (error) => {
+    if (error.code === 'EADDRINUSE') {
+      console.error(
+        `Port ${env.port} is already in use. Change PORT in backend/.env or stop the other process.`,
+      )
+      process.exit(1)
+    }
+    throw error
+  })
+}
 
 export default app
