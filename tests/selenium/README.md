@@ -1,17 +1,10 @@
-# CafeBook Selenium Workflow
+# CafeBook Deployed-Website Selenium Workflow
 
-Run this script while the local CafeBook frontend and backend are running.
+Run this script against the deployed CafeBook website:
 
 ```bash
 cd tests/selenium
 python -m pip install -r requirements.txt
-python test_cafebook.py
-```
-
-Test the deployed website instead:
-
-```bash
-set CAFEBOOK_URL=https://cafebook-two.vercel.app
 python test_cafebook.py
 ```
 

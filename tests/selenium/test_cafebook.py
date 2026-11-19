@@ -8,7 +8,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select, WebDriverWait
 
 
-BASE_URL = os.getenv("CAFEBOOK_URL", "http://localhost:5173").rstrip("/")
+BASE_URL = os.getenv(
+    "CAFEBOOK_URL",
+    "https://cafebook-two.vercel.app",
+).rstrip("/")
 ADMIN_EMAIL = os.getenv("CAFEBOOK_ADMIN_EMAIL", "admin@cafebook.com")
 ADMIN_PASSWORD = os.getenv("CAFEBOOK_ADMIN_PASSWORD", "CafeBook@123")
 WAIT_SECONDS = int(os.getenv("CAFEBOOK_WAIT_SECONDS", "20"))
@@ -75,7 +78,18 @@ def wait_for_heading_any_level(driver, text):
 
 def register_customer(driver):
     print("\n1. Registering a customer")
-    driver.get(f"{BASE_URL}/register")
+    driver.get(BASE_URL)
+
+    reserve_button = WebDriverWait(driver, WAIT_SECONDS).until(
+        EC.element_to_be_clickable(
+            (
+                By.XPATH,
+                "//a[normalize-space()='Reserve a table']",
+            )
+        )
+    )
+    reserve_button.click()
+    wait_for_url(driver, "/register")
 
     fill(driver, "fullName", customer_name)
     fill(driver, "email", customer_email)
@@ -183,14 +197,44 @@ def logout(driver):
 
 def admin_login_and_confirm_booking(driver):
     print("\n4. Admin login and booking confirmation")
-    driver.get(f"{BASE_URL}/login")
+    driver.get(BASE_URL)
+    sign_in = WebDriverWait(driver, WAIT_SECONDS).until(
+        EC.element_to_be_clickable(
+            (By.XPATH, "//a[normalize-space()='Sign in']")
+        )
+    )
+    sign_in.click()
+    wait_for_url(driver, "/login")
 
     fill(driver, "email", ADMIN_EMAIL)
     fill(driver, "password", ADMIN_PASSWORD)
     button_by_text(driver, "Sign in").click()
     wait_for_url(driver, "/")
 
-    driver.get(f"{BASE_URL}/admin/bookings")
+    driver.get(BASE_URL)
+
+    profile_button = WebDriverWait(driver, WAIT_SECONDS).until(
+        EC.element_to_be_clickable(
+            (By.XPATH, "//button[@aria-haspopup='menu']")
+        )
+    )
+    profile_button.click()
+
+    admin_link = WebDriverWait(driver, WAIT_SECONDS).until(
+        EC.element_to_be_clickable(
+            (By.XPATH, "//a[normalize-space()='Admin dashboard']")
+        )
+    )
+    admin_link.click()
+    wait_for_url(driver, "/admin")
+
+    bookings_link = WebDriverWait(driver, WAIT_SECONDS).until(
+        EC.element_to_be_clickable(
+            (By.XPATH, "//a[normalize-space()='Bookings']")
+        )
+    )
+    bookings_link.click()
+    wait_for_url(driver, "/admin/bookings")
     wait_for_page_heading(driver, "Bookings")
 
     confirm_button = WebDriverWait(driver, WAIT_SECONDS).until(
@@ -215,14 +259,26 @@ def admin_login_and_confirm_booking(driver):
 def verify_customer_can_see_confirmed_booking(driver):
     print("\n5. Verifying confirmation as the customer")
     logout(driver)
-    driver.get(f"{BASE_URL}/login")
+    sign_in = WebDriverWait(driver, WAIT_SECONDS).until(
+        EC.element_to_be_clickable(
+            (By.XPATH, "//a[normalize-space()='Sign in']")
+        )
+    )
+    sign_in.click()
+    wait_for_url(driver, "/login")
 
     fill(driver, "email", customer_email)
     fill(driver, "password", customer_password)
     button_by_text(driver, "Sign in").click()
     wait_for_url(driver, "/")
 
-    driver.get(f"{BASE_URL}/bookings")
+    bookings_link = WebDriverWait(driver, WAIT_SECONDS).until(
+        EC.element_to_be_clickable(
+            (By.XPATH, "//a[normalize-space()='My bookings']")
+        )
+    )
+    bookings_link.click()
+    wait_for_url(driver, "/bookings")
     wait_for_page_heading(driver, "My bookings.")
 
     WebDriverWait(driver, WAIT_SECONDS).until(
