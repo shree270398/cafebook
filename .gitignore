@@ -24,3 +24,7 @@ Thumbs.db
 # Coverage / reports
 coverage/
 test-results/
+
+.vercel
+.env*
+!.env.example
