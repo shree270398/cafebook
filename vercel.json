@@ -21,6 +21,54 @@
       }
     },
     {
+      "source": "/register",
+      "destination": {
+        "service": "frontend"
+      }
+    },
+    {
+      "source": "/login",
+      "destination": {
+        "service": "frontend"
+      }
+    },
+    {
+      "source": "/book",
+      "destination": {
+        "service": "frontend"
+      }
+    },
+    {
+      "source": "/bookings",
+      "destination": {
+        "service": "frontend"
+      }
+    },
+    {
+      "source": "/profile",
+      "destination": {
+        "service": "frontend"
+      }
+    },
+    {
+      "source": "/cafe",
+      "destination": {
+        "service": "frontend"
+      }
+    },
+    {
+      "source": "/menu",
+      "destination": {
+        "service": "frontend"
+      }
+    },
+    {
+      "source": "/admin/(.*)",
+      "destination": {
+        "service": "frontend"
+      }
+    },
+    {
       "source": "/(.*)",
       "destination": {
         "service": "frontend"
