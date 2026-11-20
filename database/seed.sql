@@ -162,5 +162,5 @@ values
   ('33333333-3333-4333-8333-000000000022', '11111111-1111-4111-8111-111111111111',
    'Garlic Bread', 'Toasted ciabatta with garlic herb butter and parmesan.',
    169.00, 'Snacks',
-   'https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?auto=format&fit=crop&w=900&q=80', true)
+   'https://images.unsplash.com/photo-1556008531-57e6eefc7be4?auto=format&fit=crop&w=900&q=80', true)
 on conflict (id) do nothing;
